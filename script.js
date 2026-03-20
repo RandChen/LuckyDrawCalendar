@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         locale: 'zh-tw',
         firstDay: 1, // Monday as first day of week
+        eventOrder: 'sortOrder', // Force sum at the bottom
         events: [] // We'll populate this dynamically
     });
     calendar.render();
@@ -84,12 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         allStocks.forEach(stock => {
             // Fix: Parse date string correctly considering timezones
-            // If it's an ISO string from GAS, new Date(iso) will produce local date correctly via getFullYear/etc.
-            const dateObj = new Date(stock.lotteryDate);
-            const y = dateObj.getFullYear();
-            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const d = String(dateObj.getDate()).padStart(2, '0');
-            const cleanLotteryDate = `${y}-${m}-${d}`;
+            // Manual parsing to avoid UTC shift
+            const rawDate = stock.lotteryDate.toString().split('T')[0];
+            const parts = rawDate.split(/[-/]/).map(Number);
+            const cleanLotteryDate = `${parts[0]}-${String(parts[1]).padStart(2, '0')}-${String(parts[2]).padStart(2, '0')}`;
             
             stock.lotteryDate = cleanLotteryDate;
 
@@ -201,7 +200,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     start: tMinus1,
                     end: rangeEnd,
                     allDay: true,
-                    classNames: ['event-stock']
+                    classNames: ['event-stock'],
+                    sortOrder: 1 // Top
                 });
 
                 // 2. Accumulate price for the exact 3 days (Price * 1000 per lot)
@@ -220,7 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     title: `總計: $${dailySum[date].toLocaleString()}`,
                     start: date,
                     allDay: true,
-                    classNames: ['event-sum']
+                    classNames: ['event-sum'],
+                    sortOrder: 2 // Bottom
                 });
             }
         });

@@ -75,30 +75,42 @@ main {
         padding: 1rem;
         gap: 1rem;
     }
+
     header h1 {
         font-size: 1.8rem;
     }
+
     header p {
         font-size: 0.9rem;
     }
-    #calendar-container, .data-panel {
+
+    #calendar-container,
+    .data-panel {
         padding: 0.8rem;
         border-radius: 12px;
     }
+
     /* FullCalendar mobile tweaks */
     .fc .fc-toolbar {
         flex-direction: column;
         gap: 0.8rem;
     }
+
     .fc .fc-toolbar-title {
         font-size: 1.1rem;
         text-align: center;
     }
+
     .fc .fc-button {
         padding: 0.4rem 0.6rem;
         font-size: 0.85rem;
     }
-    
+
+    .fc .fc-col-header-cell-cushion {
+        font-size: 0.75rem;
+        padding: 4px 2px !important;
+    }
+
     .stock-meta {
         flex-direction: column;
         gap: 4px;
@@ -106,7 +118,8 @@ main {
 }
 
 /* Glassmorphism Panels */
-#calendar-container, .data-panel {
+#calendar-container,
+.data-panel {
     background: var(--panel-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -121,8 +134,8 @@ main {
 .fc {
     --fc-border-color: var(--border-color);
     --fc-page-bg-color: transparent;
-    --fc-neutral-bg-color: rgba(255,255,255,0.02);
-    --fc-today-bg-color: rgba(88, 166, 255, 0.1);
+    --fc-neutral-bg-color: rgba(0, 0, 0, 0.01);
+    --fc-today-bg-color: rgba(49, 130, 206, 0.08);
 }
 
 .fc-theme-standard .fc-scrollgrid {
@@ -151,7 +164,7 @@ main {
     box-shadow: 0 0 10px var(--accent-glow);
 }
 
-.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled).fc-button-active,
 .fc .fc-button-primary:not(:disabled):active {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
@@ -164,13 +177,15 @@ main {
 }
 
 /* Weekend Coloring */
-.fc-day-sat, .fc-day-sun {
+.fc-day-sat,
+.fc-day-sun {
     background-color: rgba(0, 0, 0, 0.015) !important;
 }
 
-.fc-day-sat .fc-col-header-cell-cushion, 
+.fc-day-sat .fc-col-header-cell-cushion,
 .fc-day-sun .fc-col-header-cell-cushion {
-    color: #e53e3e !important; /* Visual cue for holidays/weekends */
+    color: #e53e3e !important;
+    /* Visual cue for holidays/weekends */
 }
 
 /* FullCalendar Events */
@@ -178,10 +193,11 @@ main {
     border: none;
     border-radius: 4px;
     padding: 2px 4px;
-    font-size: 0.85em;
-    font-weight: 500;
+    font-size: 0.82em;
+    font-weight: 600;
     transition: transform 0.2s ease;
     cursor: default;
+    overflow: hidden;
 }
 
 .fc-event:hover {
@@ -191,16 +207,20 @@ main {
 .event-stock {
     background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
     border-left: 3px solid var(--accent-color);
-    color: #1a365d !important; /* Deeper blue for better contrast */
+    color: #1a365d !important;
+    /* Deeper blue for better contrast */
     font-weight: 600;
 }
 
 .event-sum {
-    background: transparent !important;
-    color: #744210 !important; /* Darker golden/brown for better visibility */
+    background: rgba(0, 0, 0, 0.02) !important;
+    color: #5f370e !important; /* Even darker brown for better contrast */
     font-weight: 800 !important;
     text-align: right;
-    padding-right: 8px;
+    padding: 4px 8px !important;
+    margin-top: 4px;
+    border-top: 1px dotted var(--border-color);
+    font-size: 0.8em !important;
 }
 
 /* Data Panel Settings */
@@ -231,16 +251,19 @@ main {
 ::-webkit-scrollbar {
     width: 6px;
 }
+
 ::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.05); 
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2); 
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-color); 
+    background: var(--accent-color);
 }
 
 /* Stock Item Design */
@@ -248,7 +271,7 @@ main {
     display: flex;
     align-items: center;
     padding: 0.8rem;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid transparent;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -256,7 +279,7 @@ main {
 }
 
 .stock-item:hover {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border-color: var(--border-color);
     transform: translateY(-2px);
 }
@@ -326,17 +349,39 @@ footer {
 
 /* Keyframes */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
 }
