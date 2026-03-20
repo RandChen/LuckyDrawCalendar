@@ -58,6 +58,11 @@ function fetchAndFilterStockInfo() {
           symbol: row[3],
           market: row[4],
           price: parseFloat(row[9].replace(/,/g, '')) || 0,
+          startDate: row[5],
+          endDate: row[6],
+          shares: row[7],
+          allotmentDate: row[11],
+          winRate: row[16],
           rawRow: row // can keep full row if needed
         });
       }
@@ -71,7 +76,7 @@ function fetchAndFilterStockInfo() {
   sheet.clearContents();
   
   // Headers
-  const headers = ["序號", "抽籤日期", "證券名稱", "證券代號", "發行市場", "承銷價(元)"];
+  const headers = ["序號", "抽籤日期", "證券名稱", "證券代號", "發行市場", "承銷價(元)", "申購開始日", "申購結束日", "承銷股數", "撥券日期", "中籤率(%)"];
   sheet.appendRow(headers);
   
   // Data rows
@@ -82,7 +87,12 @@ function fetchAndFilterStockInfo() {
       item.name,
       item.symbol,
       item.market,
-      item.price
+      item.price,
+      item.startDate,
+      item.endDate,
+      item.shares,
+      item.allotmentDate,
+      item.winRate
     ]);
   });
   
@@ -106,7 +116,12 @@ function doGet(e) {
          name: values[i][2],
          symbol: values[i][3],
          market: values[i][4],
-         price: values[i][5]
+         price: values[i][5],
+         startDate: values[i][6],
+         endDate: values[i][7],
+         shares: values[i][8],
+         allotmentDate: values[i][9],
+         winRate: values[i][10]
        });
     }
   }
