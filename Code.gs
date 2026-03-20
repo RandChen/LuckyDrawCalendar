@@ -35,7 +35,7 @@ function fetchAndFilterStockInfo() {
   const todayStr = Utilities.formatDate(new Date(), "Asia/Taipei", "yyyy-MM-dd");
   const todayDate = new Date(todayStr + "T00:00:00+08:00");
   
-  const minus14 = new Date(todayDate.getTime() - 14 * 24 * 60 * 60 * 1000);
+  const minus1 = new Date(todayDate.getTime() - 1 * 24 * 60 * 60 * 1000);
   const plus14 = new Date(todayDate.getTime() + 14 * 24 * 60 * 60 * 1000);
   
   const filteredData = [];
@@ -65,7 +65,7 @@ function fetchAndFilterStockInfo() {
       const adDateStr = `${adYear}-${parts[1]}-${parts[2]}`;
       const lotteryDate = new Date(adDateStr + "T00:00:00+08:00");
       
-      if (lotteryDate >= minus14 && lotteryDate <= plus14) {
+      if (lotteryDate >= minus1 && lotteryDate <= plus14) {
         filteredData.push({
           seq: seq,
           lotteryDate: adDateStr,
