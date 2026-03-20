@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (dailySum[date] > 0) {
                 events.push({
                     id: `sum-${date}`,
-                    title: `總計: $${dailySum[date].toLocaleString()}`,
+                    title: `$${dailySum[date].toLocaleString()}`,
                     start: date,
                     allDay: true,
                     classNames: ['event-sum'],
