@@ -207,20 +207,19 @@ main {
 .event-stock {
     background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
     border-left: 3px solid var(--accent-color);
-    color: #1a365d !important;
-    /* Deeper blue for better contrast */
+    color: var(--text-main) !important; /* Synced with panel name color */
     font-weight: 600;
 }
 
 .event-sum {
     background: rgba(0, 0, 0, 0.02) !important;
-    color: #5f370e !important; /* Even darker brown for better contrast */
+    color: var(--success-color) !important; /* Synced with panel price color */
     font-weight: 800 !important;
     text-align: right;
     padding: 4px 8px !important;
     margin-top: 4px;
     border-top: 1px dotted var(--border-color);
-    font-size: 0.8em !important;
+    font-size: 0.85em !important;
 }
 
 /* Data Panel Settings */
