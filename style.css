@@ -1,13 +1,13 @@
 :root {
-    --bg-color: #0d1117;
-    --panel-bg: rgba(22, 27, 34, 0.7);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --text-main: #c9d1d9;
-    --text-muted: #8b949e;
-    --accent-color: #58a6ff;
-    --accent-glow: rgba(88, 166, 255, 0.4);
-    --success-color: #2ea043;
-    --danger-color: #f85149;
+    --bg-color: #fcfcfd;
+    --panel-bg: rgba(255, 255, 255, 0.7);
+    --border-color: rgba(0, 0, 0, 0.08);
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --accent-color: #3182ce;
+    --accent-glow: rgba(49, 130, 206, 0.2);
+    --success-color: #38a169;
+    --danger-color: #e53e3e;
     --font-family: 'Outfit', sans-serif;
 }
 
@@ -18,7 +18,7 @@
 }
 
 body {
-    background: radial-gradient(circle at top right, #1b2230, var(--bg-color));
+    background: radial-gradient(circle at top right, #edf2f7, var(--bg-color));
     color: var(--text-main);
     font-family: var(--font-family);
     min-height: 100vh;
@@ -44,7 +44,7 @@ header {
 header h1 {
     font-size: 2.5rem;
     font-weight: 700;
-    background: linear-gradient(90deg, #58a6ff, #a371f7);
+    background: linear-gradient(90deg, #3182ce, #805ad5);
     /* Webkit prefix required for text gradient fallback */
     background-clip: text;
     -webkit-background-clip: text;
@@ -108,12 +108,12 @@ main {
 /* Glassmorphism Panels */
 #calendar-container, .data-panel {
     background: var(--panel-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     animation: fadeIn 1s ease;
 }
 
@@ -133,7 +133,7 @@ main {
 .fc .fc-toolbar-title {
     font-weight: 600;
     font-size: 1.4rem;
-    color: #fff;
+    color: var(--text-main);
 }
 
 .fc .fc-button-primary {
@@ -163,6 +163,16 @@ main {
     font-weight: 500;
 }
 
+/* Weekend Coloring */
+.fc-day-sat, .fc-day-sun {
+    background-color: rgba(0, 0, 0, 0.015) !important;
+}
+
+.fc-day-sat .fc-col-header-cell-cushion, 
+.fc-day-sun .fc-col-header-cell-cushion {
+    color: #e53e3e !important; /* Visual cue for holidays/weekends */
+}
+
 /* FullCalendar Events */
 .fc-event {
     border: none;
@@ -179,14 +189,14 @@ main {
 }
 
 .event-stock {
-    background: linear-gradient(90deg, rgba(88, 166, 255, 0.2), rgba(88, 166, 255, 0.4));
+    background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
     border-left: 3px solid var(--accent-color);
-    color: #fff !important;
+    color: var(--text-main) !important;
 }
 
 .event-sum {
     background: transparent !important;
-    color: #e3b341 !important;
+    color: #b7791f !important;
     font-weight: 700 !important;
     text-align: right;
     padding-right: 8px;
@@ -196,7 +206,7 @@ main {
 .data-panel h2 {
     font-size: 1.2rem;
     margin-bottom: 1rem;
-    color: #fff;
+    color: var(--text-main);
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
 }
@@ -288,7 +298,7 @@ main {
 
 .stock-name {
     font-weight: 600;
-    color: #fff;
+    color: var(--text-main);
     font-size: 1rem;
 }
 
