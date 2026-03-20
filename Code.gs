@@ -3,6 +3,21 @@
 // The user provided Google Sheets URL:
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1x4V2nNJjTAJqNLfdIWNuwAULhOE_dsLaePNkXJdvKfY/edit?usp=sharing';
 
+/**
+ * 將民國日期字串 (如 115/03/31) 轉換為西元 yyyy-mm-dd 格式
+ */
+function convertToADDate(rocDateStr) {
+  if (!rocDateStr || typeof rocDateStr !== 'string') return rocDateStr;
+  const parts = rocDateStr.split('/');
+  if (parts.length === 3) {
+    const adYear = parseInt(parts[0], 10) + 1911;
+    const mm = parts[1].padStart(2, '0');
+    const dd = parts[2].padStart(2, '0');
+    return `${adYear}-${mm}-${dd}`;
+  }
+  return rocDateStr;
+}
+
 function fetchAndFilterStockInfo() {
   const twseUrl = 'https://www.twse.com.tw/rwd/zh/announcement/publicForm?response=JSON';
   const response = UrlFetchApp.fetch(twseUrl);
@@ -58,10 +73,10 @@ function fetchAndFilterStockInfo() {
           symbol: row[3],
           market: row[4],
           price: parseFloat(row[9].replace(/,/g, '')) || 0,
-          startDate: row[5],
-          endDate: row[6],
+          startDate: convertToADDate(row[5]),
+          endDate: convertToADDate(row[6]),
           shares: row[7],
-          allotmentDate: row[11],
+          allotmentDate: convertToADDate(row[11]),
           winRate: row[16],
           rawRow: row // can keep full row if needed
         });
