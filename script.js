@@ -83,8 +83,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         allStocks.forEach(stock => {
-            // Clean up date string in case it's an ISO string from GAS/Sheets
-            const cleanLotteryDate = stock.lotteryDate.toString().split('T')[0];
+            // Fix: Parse date string correctly considering timezones
+            // If it's an ISO string from GAS, new Date(iso) will produce local date correctly via getFullYear/etc.
+            const dateObj = new Date(stock.lotteryDate);
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            const cleanLotteryDate = `${y}-${m}-${d}`;
+            
             stock.lotteryDate = cleanLotteryDate;
 
             const item = document.createElement('div');
@@ -150,11 +156,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Date manipulation helper
+    // Date manipulation helper (Safe from UTC shifts)
     function getOffsetDateStr(dateStr, offsetDays) {
-        const d = new Date(dateStr);
+        const parts = dateStr.split('-');
+        const d = new Date(parts[0], parts[1] - 1, parts[2]); // Create as local date
         d.setDate(d.getDate() + offsetDays);
-        return d.toISOString().split('T')[0];
+        
+        const resY = d.getFullYear();
+        const resM = String(d.getMonth() + 1).padStart(2, '0');
+        const resD = String(d.getDate()).padStart(2, '0');
+        return `${resY}-${resM}-${resD}`;
     }
 
     function updateCalendar() {
