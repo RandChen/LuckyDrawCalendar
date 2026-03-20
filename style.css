@@ -191,13 +191,14 @@ main {
 .event-stock {
     background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
     border-left: 3px solid var(--accent-color);
-    color: var(--text-main) !important;
+    color: #1a365d !important; /* Deeper blue for better contrast */
+    font-weight: 600;
 }
 
 .event-sum {
     background: transparent !important;
-    color: #b7791f !important;
-    font-weight: 700 !important;
+    color: #744210 !important; /* Darker golden/brown for better visibility */
+    font-weight: 800 !important;
     text-align: right;
     padding-right: 8px;
 }
