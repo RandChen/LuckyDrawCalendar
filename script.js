@@ -160,7 +160,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function getOffsetDateStr(dateStr, offsetDays) {
         const parts = dateStr.split('-');
         const d = new Date(parts[0], parts[1] - 1, parts[2]); // Create as local date
-        d.setDate(d.getDate() + offsetDays);
+        
+        // If offset is -1 or 1, ensure the result is a Business Day (skip Sat/Sun)
+        if (Math.abs(offsetDays) === 1) {
+            let step = offsetDays;
+            d.setDate(d.getDate() + step);
+            while (d.getDay() === 0 || d.getDay() === 6) { // 0=Sun, 6=Sat
+                d.setDate(d.getDate() + step);
+            }
+        } else {
+            d.setDate(d.getDate() + offsetDays);
+        }
         
         const resY = d.getFullYear();
         const resM = String(d.getMonth() + 1).padStart(2, '0');
@@ -175,21 +185,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Calculate spans and sums
         allStocks.forEach(stock => {
             if (selectedStocks.has(stock.seq)) {
-                // Determine T-1, T, T+1
+                // Determine Business T-1, T, Business T+1
                 const tMinus1 = getOffsetDateStr(stock.lotteryDate, -1);
                 const tDate = stock.lotteryDate;
                 const tPlus1 = getOffsetDateStr(stock.lotteryDate, 1);
 
-                // For FullCalendar event range which is exclusive on the end date
-                // Span is from T-1 to T+1 (so end is T+2)
-                const tPlus2 = getOffsetDateStr(stock.lotteryDate, 2);
+                // For FullCalendar event range (end date is exclusive)
+                // We want to show until tPlus1 (so end is tPlus1 + 1 day)
+                const rangeEnd = getOffsetDateBase(tPlus1, 1);
 
                 // 1. Add Stock Span Event
                 events.push({
                     id: `event-${stock.seq}`,
                     title: stock.name,
                     start: tMinus1,
-                    end: tPlus2,
+                    end: rangeEnd,
                     allDay: true,
                     classNames: ['event-stock']
                 });
@@ -218,6 +228,17 @@ document.addEventListener('DOMContentLoaded', function () {
         // Re-render calendar events
         calendar.removeAllEvents();
         calendar.addEventSource(events);
+    }
+
+    // Simple offset without business day logic for range calculations
+    function getOffsetDateBase(dateStr, offsetDays) {
+        const parts = dateStr.split('-');
+        const d = new Date(parts[0], parts[1] - 1, parts[2]);
+        d.setDate(d.getDate() + offsetDays);
+        const resY = d.getFullYear();
+        const resM = String(d.getMonth() + 1).padStart(2, '0');
+        const resD = String(d.getDate()).padStart(2, '0');
+        return `${resY}-${resM}-${resD}`;
     }
 
     // Try to load data
