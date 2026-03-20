@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: window.innerWidth < 600 ? '' : 'dayGridMonth,dayGridWeek'
         },
+        dayHeaderContent: (args) => {
+            const date = args.date;
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const weekday = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+            return { html: `${month}/${day}<br>${weekday}` };
+        },
         locale: 'zh-tw',
         firstDay: 1, // Monday as first day of week
         events: [] // We'll populate this dynamically
