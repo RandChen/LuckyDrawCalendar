@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
+document.addEventListener('DOMContentLoaded', function () {
+
     // Set the current year in the footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
     const calendarEl = document.getElementById('calendar');
-    
+
     // Initialize FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // The Google Apps Script deployed Web App URL
     // REPLACE WITH ACTUAL DEPLOYED MACRO URL
-    const gasAPIUrl = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
-    
+    const gasAPIUrl = 'https://script.google.com/macros/s/AKfycbxLu9ptwdUUy05aGPv7mFP4Rst_PyNy1H1D5BsZKsQFaz-YZZWhBiF6sYgvfdnSJh8mUQ/exec';
+
     let allStocks = [];
     let selectedStocks = new Set(); // Store seq numbers of checked stocks
 
@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (gasAPIUrl === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
             // Provide mock data to demonstrate functionality
             allStocks = [
-                {seq: 1, lotteryDate: '2026-03-24', name: '倍利科', symbol: '7822', market: '初上市', price: 780000},
-                {seq: 2, lotteryDate: '2026-03-20', name: '世紀風電', symbol: '2072', market: '初上市', price: 186000},
-                {seq: 3, lotteryDate: '2026-03-24', name: '公勝保經', symbol: '6028', market: '初上櫃', price: 72000},
-                {seq: 4, lotteryDate: '2026-03-27', name: '建舜電', symbol: '3322', market: '上櫃增資', price: 11130}
+                { seq: 1, lotteryDate: '2026-03-24', name: '倍利科', symbol: '7822', market: '初上市', price: 780000 },
+                { seq: 2, lotteryDate: '2026-03-20', name: '世紀風電', symbol: '2072', market: '初上市', price: 186000 },
+                { seq: 3, lotteryDate: '2026-03-24', name: '公勝保經', symbol: '6028', market: '初上櫃', price: 72000 },
+                { seq: 4, lotteryDate: '2026-03-27', name: '建舜電', symbol: '3322', market: '上櫃增資', price: 11130 }
             ];
             renderStockList();
             return;
@@ -69,15 +69,15 @@ document.addEventListener('DOMContentLoaded', function() {
         allStocks.forEach(stock => {
             const item = document.createElement('div');
             item.className = 'stock-item';
-            
+
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = `stock-${stock.seq}`;
             checkbox.value = stock.seq;
-            
+
             // Listen to check toggle
             checkbox.addEventListener('change', (e) => {
-                if(e.target.checked) {
+                if (e.target.checked) {
                     selectedStocks.add(stock.seq);
                 } else {
                     selectedStocks.delete(stock.seq);
@@ -87,33 +87,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const info = document.createElement('div');
             info.className = 'stock-info';
-            
+
             const nameEl = document.createElement('div');
             nameEl.className = 'stock-name';
             nameEl.innerText = `${stock.name} (${stock.symbol}) - ${stock.market}`;
-            
+
             const metaEl = document.createElement('div');
             metaEl.className = 'stock-meta';
-            
+
             const dateStr = document.createElement('span');
             dateStr.innerText = `抽籤日: ${stock.lotteryDate}`;
-            
+
             const priceStr = document.createElement('span');
             priceStr.className = 'stock-price';
             priceStr.innerText = `$${stock.price.toLocaleString()}`;
 
             metaEl.appendChild(dateStr);
             metaEl.appendChild(priceStr);
-            
+
             info.appendChild(nameEl);
             info.appendChild(metaEl);
 
             item.appendChild(checkbox);
             item.appendChild(info);
-            
+
             // Click on the whole item row to toggle checkbox
             item.addEventListener('click', (e) => {
-                if(e.target.tagName !== 'INPUT') {
+                if (e.target.tagName !== 'INPUT') {
                     checkbox.checked = !checkbox.checked;
                     checkbox.dispatchEvent(new Event('change'));
                 }
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tMinus1 = getOffsetDateStr(stock.lotteryDate, -1);
                 const tDate = stock.lotteryDate;
                 const tPlus1 = getOffsetDateStr(stock.lotteryDate, 1);
-                
+
                 // For FullCalendar event range which is exclusive on the end date
                 // Span is from T-1 to T+1 (so end is T+2)
                 const tPlus2 = getOffsetDateStr(stock.lotteryDate, 2);
