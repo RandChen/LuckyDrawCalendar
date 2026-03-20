@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
+        initialView: window.innerWidth < 600 ? 'dayGridWeek' : 'dayGridMonth',
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,dayGridWeek'
+            right: window.innerWidth < 600 ? '' : 'dayGridMonth,dayGridWeek'
         },
         locale: 'zh-tw',
         firstDay: 1, // Monday as first day of week
@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         allStocks.forEach(stock => {
+            // Clean up date string in case it's an ISO string from GAS/Sheets
+            const cleanLotteryDate = stock.lotteryDate.toString().split('T')[0];
+            stock.lotteryDate = cleanLotteryDate;
+
             const item = document.createElement('div');
             item.className = 'stock-item';
 
@@ -90,13 +94,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const nameEl = document.createElement('div');
             nameEl.className = 'stock-name';
-            nameEl.innerText = `${stock.name} (${stock.symbol}) - ${stock.market}`;
+            nameEl.innerText = `${stock.name} (${stock.symbol})`; // Simplified for mobile
+            
+            const marketTag = document.createElement('span');
+            marketTag.style.fontSize = '0.7em';
+            marketTag.style.marginLeft = '8px';
+            marketTag.style.color = 'var(--text-muted)';
+            marketTag.innerText = stock.market;
+            nameEl.appendChild(marketTag);
 
             const metaEl = document.createElement('div');
             metaEl.className = 'stock-meta';
 
             const dateStr = document.createElement('span');
-            dateStr.innerText = `抽籤日: ${stock.lotteryDate}`;
+            dateStr.innerText = `抽籤日: ${cleanLotteryDate}`;
 
             const priceStr = document.createElement('span');
             priceStr.className = 'stock-price';
