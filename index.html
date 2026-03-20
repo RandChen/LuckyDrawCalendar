@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Lucky Draw Calendar</title>
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FullCalendar -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>TWSE 股票抽籤日曆</h1>
+            <p>掌握近期新股抽籤時程與承銷費用</p>
+        </header>
+        
+        <main>
+            <div id="calendar-container">
+                <div id='calendar'></div>
+            </div>
+
+            <div class="data-panel">
+                <h2>近期可申購股票一覽</h2>
+                <div class="loading" id="loading">載入中，請稍候...</div>
+                <div class="stock-list" id="stock-list" style="display: none;">
+                    <!-- Stock items will be generated here -->
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; <span id="year"></span> Rand Chen. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+:root {
+    --bg-color: #0d1117;
+    --panel-bg: rgba(22, 27, 34, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent-color: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.4);
+    --success-color: #2ea043;
+    --danger-color: #f85149;
+    --font-family: 'Outfit', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: radial-gradient(circle at top right, #1b2230, var(--bg-color));
+    color: var(--text-main);
+    font-family: var(--font-family);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    line-height: 1.6;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+    animation: fadeInDown 0.8s ease;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #58a6ff, #a371f7);
+    /* Webkit prefix required for text gradient fallback */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Glassmorphism Panels */
+#calendar-container, .data-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1s ease;
+}
+
+/* Calendar Customization */
+.fc {
+    --fc-border-color: var(--border-color);
+    --fc-page-bg-color: transparent;
+    --fc-neutral-bg-color: rgba(255,255,255,0.02);
+    --fc-today-bg-color: rgba(88, 166, 255, 0.1);
+}
+
+.fc-theme-standard .fc-scrollgrid {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.fc .fc-toolbar-title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+.fc .fc-button-primary {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    text-transform: capitalize;
+    transition: all 0.3s ease;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+}
+
+.fc-daygrid-day-number {
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+/* FullCalendar Events */
+.fc-event {
+    border: none;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+    cursor: default;
+}
+
+.fc-event:hover {
+    transform: scale(1.02);
+}
+
+.event-stock {
+    background: linear-gradient(90deg, rgba(88, 166, 255, 0.2), rgba(88, 166, 255, 0.4));
+    border-left: 3px solid var(--accent-color);
+    color: #fff !important;
+}
+
+.event-sum {
+    background: transparent !important;
+    color: #e3b341 !important;
+    font-weight: 700 !important;
+    text-align: right;
+    padding-right: 8px;
+}
+
+/* Data Panel Settings */
+.data-panel h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.loading {
+    color: var(--accent-color);
+    font-style: italic;
+    animation: pulse 1.5s infinite;
+}
+
+.stock-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05); 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2); 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color); 
+}
+
+/* Stock Item Design */
+.stock-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.stock-item:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--border-color);
+    transform: translateY(-2px);
+}
+
+/* Custom Checkbox */
+.stock-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.stock-item input[type="checkbox"]:checked {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.stock-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.stock-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.stock-name {
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.stock-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.stock-price {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
