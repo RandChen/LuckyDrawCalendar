@@ -183,8 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     classNames: ['event-stock']
                 });
 
-                // 2. Accumulate price for the exact 3 days
-                const priceValue = Number(stock.price) || 0;
+                // 2. Accumulate price for the exact 3 days (Price * 1000 per lot)
+                const priceValue = (Number(stock.price) || 0) * 1000;
                 [tMinus1, tDate, tPlus1].forEach(d => {
                     dailySum[d] = (dailySum[d] || 0) + priceValue;
                 });
