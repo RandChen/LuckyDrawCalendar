@@ -204,16 +204,21 @@ main {
     transform: scale(1.02);
 }
 
-.event-stock {
+.event-stock,
+
+.event-stock .fc-event-main {
     background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
     border-left: 3px solid var(--accent-color);
-    color: var(--text-main) !important; /* Synced with panel name color */
+    color: var(--text-main) !important;
+    /* Synced with panel name color */
     font-weight: 600;
 }
 
-.event-sum {
+.event-sum,
+.event-sum .fc-event-title {
     background: rgba(0, 0, 0, 0.02) !important;
-    color: var(--success-color) !important; /* Synced with panel price color */
+    color: var(--success-color) !important;
+    /* Synced with panel price color */
     font-weight: 800 !important;
     text-align: right;
     padding: 4px 8px !important;
