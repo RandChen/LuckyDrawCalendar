@@ -246,6 +246,74 @@ main {
     padding-bottom: 0.5rem;
 }
 
+/* Logic Selector Styling */
+.logic-selector-container {
+    margin-bottom: 2rem;
+    padding: 1.2rem;
+    background: rgba(49, 130, 206, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.logic-question {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.logic-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.logic-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.logic-option:hover {
+    color: var(--accent-color);
+}
+
+.logic-option input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.logic-option input[type="radio"]:checked {
+    border-color: var(--accent-color);
+    background: white;
+}
+
+.logic-option input[type="radio"]:checked::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .loading {
     color: var(--accent-color);
     font-style: italic;

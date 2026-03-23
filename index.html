@@ -26,6 +26,21 @@
 
             <div class="data-panel">
                 <h2>近期可申購股票一覽</h2>
+                
+                <div class="logic-selector-container">
+                    <p class="logic-question">若 A 股票退款和 B 股票扣款為同日，您的證券戶會：</p>
+                    <div class="logic-options">
+                        <label class="logic-option">
+                            <input type="radio" name="fundingLogic" value="1" checked>
+                            <span class="radio-label">1. 先退款，才扣款（T 日恢復資金）</span>
+                        </label>
+                        <label class="logic-option">
+                            <input type="radio" name="fundingLogic" value="2">
+                            <span class="radio-label">2. 先扣款，才退款（T+1 日才恢復資金）</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="loading" id="loading">載入中，請稍候...</div>
                 <div class="stock-list" id="stock-list" style="display: none;">
                     <!-- Stock items will be generated here -->

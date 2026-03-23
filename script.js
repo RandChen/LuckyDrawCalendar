@@ -41,6 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     calendar.render();
 
+    // Listen for changes in the funding logic radio buttons
+    const logicRadios = document.querySelectorAll('input[name="fundingLogic"]');
+    logicRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            updateCalendar();
+        });
+    });
+
     // The Google Apps Script deployed Web App URL
     // REPLACE WITH ACTUAL DEPLOYED MACRO URL
     const gasAPIUrl = 'https://script.google.com/macros/s/AKfycbxLu9ptwdUUy05aGPv7mFP4Rst_PyNy1H1D5BsZKsQFaz-YZZWhBiF6sYgvfdnSJh8mUQ/exec';
@@ -228,10 +236,22 @@ document.addEventListener('DOMContentLoaded', function () {
         // Calculate spans and sums
         allStocks.forEach(stock => {
             if (selectedStocks.has(stock.seq)) {
-                // Determine Business T-1, T, Business T+1
+                // Get the selected funding logic from UI
+                const selectedLogic = document.querySelector('input[name="fundingLogic"]:checked').value;
+
+                // Determine Business T-1, T
                 const tMinus1 = getOffsetDateStr(stock.lotteryDate, -1);
                 const tDate = stock.lotteryDate;
-                const tPlus1 = getOffsetDateStr(stock.lotteryDate, 1);
+                
+                // Determine tPlus1 based on selected user logic
+                let tPlus1;
+                if (selectedLogic === "1") {
+                    // Option 1: Refund before withdrawal (Same day recovery)
+                    tPlus1 = stock.lotteryDate; 
+                } else {
+                    // Option 2: Withdrawal before refund (T+1 recovery)
+                    tPlus1 = getOffsetDateStr(stock.lotteryDate, 1);
+                }
 
                 // For FullCalendar event range (end date is exclusive)
                 // We want to show until tPlus1 (so end is tPlus1 + 1 day)
@@ -248,9 +268,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     sortOrder: 1 // Top
                 });
 
-                // 2. Accumulate price for the exact 3 days (Price * 1000 per lot)
+                // 2. Accumulate price for the affected days
                 const priceValue = (Number(stock.price) || 0);
-                [tMinus1, tDate, tPlus1].forEach(d => {
+
+                // Build array of dates to mark as 'funded'
+                const fundingDates = [tMinus1, tDate];
+                if (selectedLogic === "2") {
+                    fundingDates.push(tPlus1);
+                }
+
+                fundingDates.forEach(d => {
                     dailySum[d] = (dailySum[d] || 0) + priceValue;
                 });
             }
