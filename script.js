@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         locale: 'zh-tw',
-        dayCellContent: function(arg) {
+        dayCellContent: function (arg) {
             // Remove '日' from the day number text (e.g. '1日' -> '1')
             return arg.dayNumberText.replace('日', '');
         },
-        firstDay: 7, // Monday as first day of week
+        firstDay: 0, // Monday as first day of week
         eventOrder: 'sortOrder', // Force sum at the bottom
         events: [] // We'll populate this dynamically
     });
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Provide mock data to demonstrate functionality
             allStocks = [
                 { seq: 1, lotteryDate: '2026-03-24', name: '倍利科', symbol: '7822', market: '初上市', price: 780000 },
-                { seq: 2, lotteryDate: '2026-03-20', name: '世紀風電', symbol: '2072', market: '初上市', price: 186000 },
+                { seq: 2, lotteryDate: '2026-03-30', name: '世紀風電', symbol: '2072', market: '初上市', price: 186000 },
                 { seq: 3, lotteryDate: '2026-03-24', name: '公勝保經', symbol: '6028', market: '初上櫃', price: 72000 },
                 { seq: 4, lotteryDate: '2026-03-27', name: '建舜電', symbol: '3322', market: '上櫃增資', price: 11130 }
             ];
