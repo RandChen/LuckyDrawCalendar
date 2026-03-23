@@ -35,7 +35,7 @@ function fetchAndFilterStockInfo() {
   const todayStr = Utilities.formatDate(new Date(), "Asia/Taipei", "yyyy-MM-dd");
   const todayDate = new Date(todayStr + "T00:00:00+08:00");
   
-  const minus14 = new Date(todayDate.getTime() - 1 * 24 * 60 * 60 * 1000);
+  const minus14 = new Date(todayDate.getTime() - 3 * 24 * 60 * 60 * 1000);
   const plus14 = new Date(todayDate.getTime() + 14 * 24 * 60 * 60 * 1000);
   
   const filteredData = [];
