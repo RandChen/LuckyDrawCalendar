@@ -57,7 +57,7 @@ function fetchAndFilterStockInfo() {
     const market = row[4];
     if (market === "中央登錄公債") return;
     
-    // Condition 3: Date in [-14, +14]
+    // Condition 3: Date in [-1, +14]
     const rocDateStr = row[1]; // e.g., "115/03/31"
     const parts = rocDateStr.split('/');
     if (parts.length === 3) {
@@ -75,9 +75,6 @@ function fetchAndFilterStockInfo() {
           price: parseFloat(row[9].replace(/,/g, '')) || 0,
           startDate: convertToADDate(row[5]),
           endDate: convertToADDate(row[6]),
-          shares: row[7],
-          allotmentDate: convertToADDate(row[11]),
-          winRate: row[16],
           rawRow: row // can keep full row if needed
         });
       }
@@ -91,7 +88,7 @@ function fetchAndFilterStockInfo() {
   sheet.clearContents();
   
   // Headers
-  const headers = ["序號", "抽籤日期", "證券名稱", "證券代號", "發行市場", "承銷價(元)", "申購開始日", "申購結束日", "承銷股數", "撥券日期", "中籤率(%)"];
+  const headers = ["序號", "抽籤日期", "證券名稱", "證券代號", "發行市場", "承銷價(元)", "申購開始日", "申購結束日"];
   sheet.appendRow(headers);
   
   // Data rows
@@ -104,10 +101,7 @@ function fetchAndFilterStockInfo() {
       item.market,
       item.price,
       item.startDate,
-      item.endDate,
-      item.shares,
-      item.allotmentDate,
-      item.winRate
+      item.endDate
     ]);
   });
   
@@ -143,10 +137,7 @@ function doGet(e) {
          market: row[4],
          price: row[5],
          startDate: formatDate(row[6]),
-         endDate: formatDate(row[7]),
-         shares: row[8],
-         allotmentDate: formatDate(row[9]),
-         winRate: row[10]
+         endDate: formatDate(row[7])
        });
     }
   }
