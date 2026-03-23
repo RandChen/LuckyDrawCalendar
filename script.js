@@ -143,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
             metaEl.appendChild(priceStr);
 
             const periodEl = document.createElement('div');
-            // Remove time portion if present in string ISO format from API
-            const cleanStartDate = stock.startDate.toString().split('T')[0];
-            const cleanEndDate = stock.endDate.toString().split('T')[0];
+            // Remove time portion if present in string ISO format from API, and extract MM-DD
+            const cleanStartDate = stock.startDate.toString().split('T')[0].substring(5);
+            const cleanEndDate = stock.endDate.toString().split('T')[0].substring(5);
             periodEl.innerText = `申購期間: ${cleanStartDate} ~ ${cleanEndDate}`;
             periodEl.style.fontSize = '0.75rem';
             periodEl.style.color = 'var(--text-muted)';
