@@ -12,9 +12,10 @@
 ## 3. 功能介紹 (Features)
 * 📅 **直覺的日曆視圖 (Calendar View)**: 支援「月 (Month)」與「週 (Week)」視圖切換，清晰呈現股票抽籤的相關時程。
 * ☑️ **多標的勾選 (Multi-Selection)**: 使用者可於側邊欄勾選近期開放抽籤的股票，日曆將即時更新對應的事件。
-* 🕒 **營業日精準計算 (Business Day Calculation)**: 系統會自動扣除週六、週日等非營業日，精準標示從 T-1 日（扣款前一日）到 T+1 日（解鎖日）的資金佔用區間。
-* 💰 **自動資金加總 (Funding Calculation)**: 依據選取的股票，系統會自動在日曆上的對應日期加總並標示出當日所需的總申購金額（承銷價 × 1000 股），幫助投資人進行資金控管。
-* 🎨 **現代化響應式介面 (Modern RWD UI)**: 採用明亮的 Glassmorphism（毛玻璃）風格設計，並完全支援行動裝置瀏覽。
+* 🕒 **營業日精準計算 (Business Day Calculation)**: 系統會自動扣除週六、週日等非營業日，精準標示從 T-1 日（扣款前一日）到 T+1 日（解鎖日）的資金佔用區間（亦可選擇隱藏週末顯示）。
+* 💰 **自動資金加總 (Funding Calculation)**: 依據選取的股票，系統會自動在日曆上的對應日期加總並標示出當日所需的總申購金額，幫助投資人進行資金控管。
+* 🚀 **極速讀取快取 (Dual Caching)**: 後端整合 GAS `CacheService` 記憶體快取以縮短 API 回覆時間，前端整合 `localStorage` 達成第二次載入「0 毫秒延遲」的秒開體驗。
+* 🎨 **明亮現代化介面 (Light Mode RWD UI)**: 採用乾淨優雅的 Light Mode 與 Glassmorphism（毛玻璃）風格設計，並完全支援行動裝置視圖與觸控操作。
 
 ## 4. 技術棧 (Tech Stack)
 ### 前端 (Frontend)
@@ -46,13 +47,12 @@ sequenceDiagram
     GAS->>Sheet: 寫入過濾後的資料 (快取)
 
     Note over Client: 使用者開啟網頁
-    Client->>GAS: 發送 GET 請求 (doGet API)
-    GAS->>Sheet: 讀取快取資料
-    Sheet-->>GAS: 回傳資料表內容
-    GAS->>GAS: 將 Date 物件轉為 <br/> 台北時區 (GMT+8) 字串
+    Client->>Client: 1. 優先讀取 LocalStorage 快取 (秒開畫面)
+    Client->>GAS: 2. 背景發送 GET 請求更新 (doGet API)
+    GAS->>GAS: 檢查 CacheService (6小時有效)\n若無快取則讀 Sheet 並寫入
+    GAS->>GAS: 轉換輸出的日期為 \n Asia/Taipei (GMT+8) 字串
     GAS-->>Client: 回傳 JSON 格式資料
-    Client->>Client: 渲染側邊欄清單
-    Client->>Client: 勾選後動態更新 FullCalendar
+    Client->>Client: 比對差異，若不同則動態更新清單與日曆
 ```
 
 ## 6. 安裝與開發 (Setup & Installation)
