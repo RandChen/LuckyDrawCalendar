@@ -35,7 +35,7 @@ function fetchAndFilterStockInfo() {
   const todayStr = Utilities.formatDate(new Date(), "Asia/Taipei", "yyyy-MM-dd");
   const todayDate = new Date(todayStr + "T00:00:00+08:00");
   
-  const minus1 = new Date(todayDate.getTime() - 1 * 24 * 60 * 60 * 1000);
+  const minus14 = new Date(todayDate.getTime() - 1 * 24 * 60 * 60 * 1000);
   const plus14 = new Date(todayDate.getTime() + 14 * 24 * 60 * 60 * 1000);
   
   const filteredData = [];
@@ -65,7 +65,7 @@ function fetchAndFilterStockInfo() {
       const adDateStr = `${adYear}-${parts[1]}-${parts[2]}`;
       const lotteryDate = new Date(adDateStr + "T00:00:00+08:00");
       
-      if (lotteryDate >= minus1 && lotteryDate <= plus14) {
+      if (lotteryDate >= minus14 && lotteryDate <= plus14) {
         filteredData.push({
           seq: seq,
           lotteryDate: adDateStr,
@@ -125,18 +125,28 @@ function doGet(e) {
   // Assuming row 0 is headers
   if (values.length > 1) {
     for (let i = 1; i < values.length; i++) {
+       const row = values[i];
+       
+       // Formatter function to prevent UTC shift
+       const formatDate = (val) => {
+           if (val instanceof Date) {
+               return Utilities.formatDate(val, "Asia/Taipei", "yyyy-MM-dd");
+           }
+           return val;
+       };
+       
        result.push({
-         seq: values[i][0],
-         lotteryDate: values[i][1], // the string or Date object
-         name: values[i][2],
-         symbol: values[i][3],
-         market: values[i][4],
-         price: values[i][5],
-         startDate: values[i][6],
-         endDate: values[i][7],
-         shares: values[i][8],
-         allotmentDate: values[i][9],
-         winRate: values[i][10]
+         seq: row[0],
+         lotteryDate: formatDate(row[1]),
+         name: row[2],
+         symbol: row[3],
+         market: row[4],
+         price: row[5],
+         startDate: formatDate(row[6]),
+         endDate: formatDate(row[7]),
+         shares: row[8],
+         allotmentDate: formatDate(row[9]),
+         winRate: row[10]
        });
     }
   }
