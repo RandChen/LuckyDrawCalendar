@@ -105,11 +105,22 @@ function fetchAndFilterStockInfo() {
     ]);
   });
   
-  Logger.log("Finished writing " + filteredData.length + " rows to Sheet.");
+  // Clear the cache whenever new data is fetched and written
+  const cache = CacheService.getScriptCache();
+  cache.remove("luckyDrawData");
+  
+  Logger.log("Finished writing " + filteredData.length + " rows to Sheet and cleared cache.");
 }
 
 // Web App API to serve data to frontend
 function doGet(e) {
+  const cache = CacheService.getScriptCache();
+  const cachedData = cache.get("luckyDrawData");
+  
+  if (cachedData) {
+    return ContentService.createTextOutput(cachedData).setMimeType(ContentService.MimeType.JSON);
+  }
+
   const sheet = SpreadsheetApp.openByUrl(SHEET_URL).getSheets()[0];
   const dataRange = sheet.getDataRange();
   const values = dataRange.getValues();
@@ -142,6 +153,8 @@ function doGet(e) {
     }
   }
   
-  return ContentService.createTextOutput(JSON.stringify(result))
-    .setMimeType(ContentService.MimeType.JSON);
+  const jsonString = JSON.stringify(result);
+  cache.put("luckyDrawData", jsonString, 21600); // Cache for 6 hours
+  
+  return ContentService.createTextOutput(jsonString).setMimeType(ContentService.MimeType.JSON);
 }
