@@ -59,7 +59,7 @@ header p {
 
 main {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
     gap: 2rem;
     align-items: start;
 }
@@ -204,8 +204,9 @@ main {
     transform: scale(1.02);
 }
 
-.event-stock,
 
+.event-stock,
+.event-stock .fc-event-title,
 .event-stock .fc-event-main {
     background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
     border-left: 3px solid var(--accent-color);
