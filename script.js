@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         locale: 'zh-tw',
-        firstDay: 1, // Monday as first day of week
+        firstDay: 7, // Monday as first day of week
         eventOrder: 'sortOrder', // Force sum at the bottom
         events: [] // We'll populate this dynamically
     });
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const rawDate = stock.lotteryDate.toString().split('T')[0];
             const parts = rawDate.split(/[-/]/).map(Number);
             const cleanLotteryDate = `${parts[0]}-${String(parts[1]).padStart(2, '0')}-${String(parts[2]).padStart(2, '0')}`;
-            
+
             stock.lotteryDate = cleanLotteryDate;
 
             const item = document.createElement('div');
@@ -116,13 +116,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const nameEl = document.createElement('div');
             nameEl.className = 'stock-name';
             nameEl.innerText = `${stock.name} (${stock.symbol})`; // Simplified for mobile
-            
+
             const marketTag = document.createElement('span');
             marketTag.style.fontSize = '0.7em';
             marketTag.style.marginLeft = '8px';
             marketTag.style.color = 'var(--text-muted)';
             marketTag.innerText = stock.market;
             nameEl.appendChild(marketTag);
+
+            const metaContainer = document.createElement('div');
+            metaContainer.style.display = 'flex';
+            metaContainer.style.flexDirection = 'column';
+            metaContainer.style.gap = '4px';
 
             const metaEl = document.createElement('div');
             metaEl.className = 'stock-meta';
@@ -137,8 +142,19 @@ document.addEventListener('DOMContentLoaded', function () {
             metaEl.appendChild(dateStr);
             metaEl.appendChild(priceStr);
 
+            const periodEl = document.createElement('div');
+            // Remove time portion if present in string ISO format from API
+            const cleanStartDate = stock.startDate.toString().split('T')[0];
+            const cleanEndDate = stock.endDate.toString().split('T')[0];
+            periodEl.innerText = `申購期間: ${cleanStartDate} ~ ${cleanEndDate}`;
+            periodEl.style.fontSize = '0.75rem';
+            periodEl.style.color = 'var(--text-muted)';
+
+            metaContainer.appendChild(metaEl);
+            metaContainer.appendChild(periodEl);
+
             info.appendChild(nameEl);
-            info.appendChild(metaEl);
+            info.appendChild(metaContainer);
 
             item.appendChild(checkbox);
             item.appendChild(info);
@@ -159,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function getOffsetDateStr(dateStr, offsetDays) {
         const parts = dateStr.split('-');
         const d = new Date(parts[0], parts[1] - 1, parts[2]); // Create as local date
-        
+
         // If offset is -1 or 1, ensure the result is a Business Day (skip Sat/Sun)
         if (Math.abs(offsetDays) === 1) {
             let step = offsetDays;
@@ -170,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             d.setDate(d.getDate() + offsetDays);
         }
-        
+
         const resY = d.getFullYear();
         const resM = String(d.getMonth() + 1).padStart(2, '0');
         const resD = String(d.getDate()).padStart(2, '0');
