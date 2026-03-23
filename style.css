@@ -205,18 +205,21 @@ main {
 }
 
 
-.event-stock,
-.event-stock .fc-event-title,
-.event-stock .fc-event-main {
-    background: linear-gradient(180deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
-    border-left: 2px solid var(--accent-color);
+.event-stock {
+    background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2)) !important;
+    border-left: 2px solid var(--accent-color) !important;
     color: var(--text-main) !important;
     /* Synced with panel name color */
     font-weight: 600;
 }
 
-.event-sum,
-.event-sum .fc-event-title {
+.event-stock .fc-event-title,
+.event-stock .fc-event-main {
+    background: transparent !important;
+    color: inherit !important;
+}
+
+.event-sum {
     background: rgba(0, 0, 0, 0.02) !important;
     color: var(--success-color) !important;
     /* Synced with panel price color */
@@ -226,6 +229,12 @@ main {
     margin-top: 4px;
     border-top: 1px dotted var(--border-color);
     font-size: 0.85em !important;
+}
+
+.event-sum .fc-event-title,
+.event-sum .fc-event-main {
+    background: transparent !important;
+    color: inherit !important;
 }
 
 /* Data Panel Settings */
