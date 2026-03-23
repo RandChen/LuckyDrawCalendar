@@ -66,15 +66,38 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        // Attempt to load from localStorage for an instant initial render
+        const cachedData = localStorage.getItem('luckyDrawStocks');
+        if (cachedData) {
+            try {
+                allStocks = JSON.parse(cachedData);
+                renderStockList(); // INSTANT DISPLAY!
+            } catch (e) {
+                console.error("Local cache parsing error", e);
+            }
+        } else {
+            // Show loading text only if there is absolutely no cached data
+            loadingEl.style.display = 'block';
+            stockListEl.style.display = 'none';
+        }
+
+        // Fetch fresh data in the background from GAS API
         fetch(gasAPIUrl)
             .then(response => response.json())
             .then(data => {
-                allStocks = data;
-                renderStockList();
+                const newCacheStr = JSON.stringify(data);
+                // Only re-render if the fetched data actually changed
+                if (cachedData !== newCacheStr) {
+                    allStocks = data;
+                    localStorage.setItem('luckyDrawStocks', newCacheStr);
+                    renderStockList();
+                }
             })
             .catch(error => {
                 console.error("Error fetching data:", error);
-                loadingEl.innerText = "無法載入資料，請確認 API 網址是否正確。";
+                if (!cachedData) {
+                    loadingEl.innerText = "無法載入資料，請確認 API 網址是否正確。";
+                }
             });
     }
 
