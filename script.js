@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         firstDay: 0, // Monday as first day of week
         eventOrder: 'sortOrder', // Force sum at the bottom
+        weekends: false, // Do not show Saturdays and Sundays
         events: [] // We'll populate this dynamically
     });
     calendar.render();
