@@ -208,8 +208,8 @@ main {
 .event-stock,
 .event-stock .fc-event-title,
 .event-stock .fc-event-main {
-    background: linear-gradient(90deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
-    border-left: 3px solid var(--accent-color);
+    background: linear-gradient(180deg, rgba(49, 130, 206, 0.1), rgba(49, 130, 206, 0.2));
+    border-left: 2px solid var(--accent-color);
     color: var(--text-main) !important;
     /* Synced with panel name color */
     font-weight: 600;
