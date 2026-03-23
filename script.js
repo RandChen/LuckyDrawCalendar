@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: window.innerWidth < 600 ? '' : 'dayGridMonth,dayGridWeek'
+            right: window.innerWidth < 600 ? 'dayGridMonth,dayGridWeek' : 'dayGridMonth,dayGridWeek'
         },
         views: {
             dayGridMonth: {
@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         locale: 'zh-tw',
+        dayCellContent: function(arg) {
+            // Remove '日' from the day number text (e.g. '1日' -> '1')
+            return arg.dayNumberText.replace('日', '');
+        },
         firstDay: 7, // Monday as first day of week
         eventOrder: 'sortOrder', // Force sum at the bottom
         events: [] // We'll populate this dynamically
