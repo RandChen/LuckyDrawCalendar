@@ -31,8 +31,22 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         locale: 'zh-tw',
         dayCellContent: function (arg) {
-            // Remove '日' from the day number text (e.g. '1日' -> '1')
-            return arg.dayNumberText.replace('日', '');
+            const d = arg.date;
+            const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            const dayNum = arg.dayNumberText.replace('日', '');
+            
+            if (holidays && holidays[dateStr]) {
+                return `${dayNum}-${holidays[dateStr]}`;
+            }
+            return dayNum;
+        },
+        dayClassNames: function(arg) {
+            const d = arg.date;
+            const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            if (holidays && holidays[dateStr]) {
+                return ['holiday-cell'];
+            }
+            return [];
         },
         firstDay: 0, // Monday as first day of week
         eventOrder: 'sortOrder', // Force sum at the bottom
@@ -52,9 +66,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // The Google Apps Script deployed Web App URL
     // REPLACE WITH ACTUAL DEPLOYED MACRO URL
     const gasAPIUrl = 'https://script.google.com/macros/s/AKfycbxLu9ptwdUUy05aGPv7mFP4Rst_PyNy1H1D5BsZKsQFaz-YZZWhBiF6sYgvfdnSJh8mUQ/exec';
-
+    
     let allStocks = [];
     let selectedStocks = new Set(); // Store seq numbers of checked stocks
+    let holidays = {}; // Global holiday map
+
+    // Fetch and load holidays first
+    fetch('holiday.json')
+        .then(response => response.json())
+        .then(data => {
+            holidays = data;
+            loadData(); // Load stocks after holidays are ready
+            calendar.render(); // Re-render calendar with holiday labels
+        })
+        .catch(err => {
+            console.error("Failed to load holidays", err);
+            loadData();
+        });
 
     const loadingEl = document.getElementById('loading');
     const stockListEl = document.getElementById('stock-list');
@@ -212,12 +240,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const parts = dateStr.split('-');
         const d = new Date(parts[0], parts[1] - 1, parts[2]); // Create as local date
 
-        // If offset is -1 or 1, ensure the result is a Business Day (skip Sat/Sun)
+        // If offset is -1 or 1, ensure the result is a Business Day (skip Sat/Sun and Holidays)
         if (Math.abs(offsetDays) === 1) {
             let step = offsetDays;
             d.setDate(d.getDate() + step);
-            while (d.getDay() === 0 || d.getDay() === 6) { // 0=Sun, 6=Sat
-                d.setDate(d.getDate() + step);
+            
+            while (true) {
+                const checkY = d.getFullYear();
+                const checkM = String(d.getMonth() + 1).padStart(2, '0');
+                const checkD = String(d.getDate()).padStart(2, '0');
+                const checkStr = `${checkY}-${checkM}-${checkD}`;
+                
+                // Skip if Weekend OR if exists in holiday.json
+                if (d.getDay() === 0 || d.getDay() === 6 || (holidays && holidays[checkStr])) {
+                    d.setDate(d.getDate() + step);
+                } else {
+                    break;
+                }
             }
         } else {
             d.setDate(d.getDate() + offsetDays);

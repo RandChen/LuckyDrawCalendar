@@ -59,7 +59,7 @@ header p {
 
 main {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: 2rem;
     align-items: start;
 }
@@ -141,6 +141,10 @@ main {
 .fc-theme-standard .fc-scrollgrid {
     border-radius: 12px;
     overflow: hidden;
+}
+
+.holiday-cell {
+    background-color: rgba(229, 62, 62, 0.08) !important;
 }
 
 .fc .fc-toolbar-title {
