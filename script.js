@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Global state variables (moved to the top to avoid TDZ errors)
+    let allStocks = [];
+    let selectedStocks = new Set(); // Store seq numbers of checked stocks
+    let holidays = {}; // Global holiday map
 
     // Set the current year in the footer
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -40,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             return dayNum;
         },
-        dayClassNames: function(arg) {
+        dayCellClassNames: function(arg) {
             const d = arg.date;
             const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             if (holidays && holidays[dateStr]) {
@@ -67,9 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // REPLACE WITH ACTUAL DEPLOYED MACRO URL
     const gasAPIUrl = 'https://script.google.com/macros/s/AKfycbxLu9ptwdUUy05aGPv7mFP4Rst_PyNy1H1D5BsZKsQFaz-YZZWhBiF6sYgvfdnSJh8mUQ/exec';
     
-    let allStocks = [];
-    let selectedStocks = new Set(); // Store seq numbers of checked stocks
-    let holidays = {}; // Global holiday map
 
     // Fetch and load holidays first
     fetch('holiday.json')
