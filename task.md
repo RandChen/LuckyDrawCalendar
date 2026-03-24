@@ -1,0 +1,34 @@
+# Task Plan: Lucky Draw Calendar
+
+- [x] Write Google Apps Script for crawler
+  - [x] Fetch TWSE JSON API.
+  - [x] Parse ROC date and filter by condition.
+  - [x] Write data to Google Sheet.
+  - [x] Implement [doGet](file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/Code.gs#115-161) serving Sheet data.
+- [x] Setup Web App project structure (HTML/CSS/JS)
+  - [x] Initialize [index.html](file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/index.html) with FullCalendar and UI layout.
+  - [x] Implement [style.css](file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/style.css) for a beautiful, premium design.
+  - [x] Implement [script.js](file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js) to fetch data from GAS web app.
+  - [x] Render data list with checkboxes under the calendar.
+  - [x] Implement calendar event rendering logic (T-1 to T+1).
+  - [x] Calculate and display daily underwriting cost aggregations on the calendar.
+- [x] Date & Bug Fixes
+  - [x] Fix UTC offset discrepancy in GAS timezone output (Asia/Taipei).
+  - [x] Fix (T-1, T+1) calculations to only land on proper business days (skip weekends).
+- [x] UI & UX Refinements
+  - [x] Upgrade aesthetics from Dark Mode to a premium Light Mode theme.
+  - [x] Show formatted Subscription Period (MM-DD ~ MM-DD) under stock lottery dates.
+  - [x] Hide weekends from the calendar to highlight business days.
+  - [x] Fix specific CSS overriding issues with FullCalendar native styles.
+- [x] Performance Optimizations
+  - [x] Implement GAS `CacheService` to serve data swiftly and prevent redundant DB reads.
+  - [x] Implement frontend `localStorage` to cache data across reloads, making load times nearly instantaneous.
+  - [x] Trim unused JSON payload properties (shares, allotmentDate, winRate) from GAS.
+  - [x] Implement manual refresh button (`?nocache=true`) to bypass both local and remote caches.
+- [x] Advanced Features
+  - [x] Support [holiday.json](file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/holiday.json) to identify holidays, visually highlight them (light red), and skip them in business day calculations.
+  - [x] Add user funding logic selector (refund first vs withdrawal first) affecting `T+1` boundary rendering.
+- [x] Documentation & Version Control
+  - [x] Host on GitHub Pages and initialize Git repository.
+  - [x] Document architecture and features in [README.md](file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/README.md).
+  - [x] Keep [implementation_plan.md](file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/implementation_plan.md) and [walkthrough.md](file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/walkthrough.md) strictly updated.
