@@ -242,12 +242,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Determine Business T-1, T
                 const tMinus1 = getOffsetDateStr(stock.lotteryDate, -1);
                 const tDate = stock.lotteryDate;
-                
+
                 // Determine tPlus1 based on selected user logic
                 let tPlus1;
                 if (selectedLogic === "1") {
                     // Option 1: Refund before withdrawal (Same day recovery)
-                    tPlus1 = stock.lotteryDate; 
+                    tPlus1 = stock.lotteryDate;
                 } else {
                     // Option 2: Withdrawal before refund (T+1 recovery)
                     tPlus1 = getOffsetDateStr(stock.lotteryDate, 1);
