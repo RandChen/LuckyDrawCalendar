@@ -15,13 +15,16 @@
 
 ### 3. 高級感 UI 元件設計 (Line 120-131, 284-355)
 *   **玻璃擬態 (Glassmorphism)**：這部分的關鍵在於 `backdrop-filter: blur(20px);`。它讓容器底下的背景呈現半透明且模糊的效果，像一塊噴砂玻璃。
-*   **互動邏輯 (Hover Effects)**：`stock-item` (股票清單項) 寫了 `transition` 與 `transform: translateY(-2px);`。當滑鼠滑過時，標籤會輕微向上浮起，增加互動的靈魂感。
-*   **自定義 Checkbox**：原生瀏覽器的勾選方塊很難看且無法換色，我們透過 `appearance: none` 將其隱藏，並手動寫出一個具有重描邊、帶漸層陰影的自定義方塊。
+*   **互動邏輯 (Hover Effects) 與動畫**：
+    *   `stock-item` (股票清單項) 寫了 `transition` 與 `transform: translateY(-2px);`。當滑鼠滑過時，標籤會輕微向上浮起，增加互動的靈魂感。
+    *   **重整按鈕 `.refresh-btn`** 加入了滑鼠懸停放大並稍微傾斜 (`scale` & `rotate`) 的活潑感，且如果抓取資料時，會套用獨立定義的 `@keyframes spin` 無限旋轉動畫！
+*   **自定義 Checkbox & Radio Button**：原生瀏覽器的勾選與單選方塊很難看且無法換色，我們透過 `appearance: none` 將其隱藏，並手動寫出帶有重描邊、帶漸層陰影的自定義圓圈與方塊。
 
 ### 4. 外部套件深度客製 (FullCalendar Overrides, Line 133-239)
 這是本檔案中最具技術含量的部分。
 *   **樣式覆蓋 (Styles Override)**：FullCalendar 有自己的預設樣式。我們透過選取內部類別（如 `.fc-button-primary`），強制注入我們自定義的顏色與陰影，讓日曆跟網頁融為一體。
-*   **客製化事件 (`.event-stock`, `.event-sum`)**：
+*   **客製化事件 (`.event-stock`, `.event-sum`, `.holiday-cell`)**：
+    *   **`.holiday-cell` (國定假日格)**：利用輕柔的淡紅色底 (`rgba(229, 62, 62, 0.08)`) 不干擾視覺的同時有效區分非營業日。
     *   **`.event-stock` (股票標籤)**：設定了漸層背景與左側加粗邊框 (`border-left: 5px solid`)，模仿金融軟體的標記感。
     *   **`.event-sum` (金額加總)**：使用 `text-align: right` 將金額靠右，並用細虛線與上方隔離，讓它看起來更像是一份資產清單的底部結算。
 

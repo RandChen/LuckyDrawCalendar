@@ -16,7 +16,7 @@
 *   **Header (Line 17-20)**: 定義網頁的大標題與副標題。
 *   **Main (Line 22)**: 這是頁面的心臟地帶，採用了兩欄式佈局：
     *   **左側：`#calendar` (Line 24)**：這是一個**空的容器**。當 [script.js](cci:7://file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js:0:0-0:0) 執行時，它會去找這個 ID，並在裡面「繪製」出完整的 FullCalendar 日曆。
-    *   **右側：`.data-panel` (Line 27)**：這是側邊欄，裡面預設顯示一個 `loading` (Line 29) 載入中字樣，並有一個隱藏的 `stock-list` (Line 30) 準備接收股票清單。
+    *   **右側：`.data-panel` (Line 27)**：這是側邊欄。我們在它的頂部定義了一個包著**主標題與手動更新按鈕 (`#refresh-btn`)** 的 `.panel-header`；下方放了一個用來控制**退款/扣款邏輯的 Radio 按鈕區塊** (`.logic-selector-container`)。最底部顯示一個 `loading` (Line 44) 載入中字樣，並有一個隱藏的 `stock-list` 準備接收動態生成的清單。
 *   **Footer (Line 36-38)**: 顯示版權宣告與年份。
 
 ### 3. 運行邏輯（骨架如何動起來？）

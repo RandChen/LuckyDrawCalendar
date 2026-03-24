@@ -12,9 +12,10 @@
 ## 3. 功能介紹 (Features)
 * 📅 **直覺的日曆視圖 (Calendar View)**: 支援「月 (Month)」與「週 (Week)」視圖切換，清晰呈現股票抽籤的相關時程。
 * ☑️ **多標的勾選 (Multi-Selection)**: 使用者可於側邊欄勾選近期開放抽籤的股票，日曆將即時更新對應的事件。
-* 🕒 **營業日精準計算 (Business Day Calculation)**: 系統會自動扣除週六、週日等非營業日，精準標示從 T-1 日（扣款前一日）到 T+1 日（解鎖日）的資金佔用區間。
-* 💰 **自動資金加總 (Funding Calculation)**: 依據選取的股票，系統會自動在日曆上的對應日期加總並標示出當日所需的總申購金額，幫助投資人進行資金控管。
-* 🚀 **極速讀取快取 (Dual Caching)**: 後端整合 GAS `CacheService` 記憶體快取以縮短 API 回覆時間，前端整合 `localStorage` 達成第二次載入「0 毫秒延遲」的秒開體驗。
+* 🕒 **精準營業日運算與假日支援 (Business Days & Holidays)**: 系統實作專屬演算法，自動扣除週六、日，並動態讀取 `holiday.json` 自動跳過並標示（淡紅色背景與節日名稱）國定假日，精準計算出 T-1 日到 T+1 日的資金佔款區間。
+* ⚙️ **資金邏輯客製化 (Custom Funding Logic)**: 內建邏輯切換模組，使用者能根據自己證券戶的規則（如退款日若與扣款日相撞，是先扣款還是先退款），自由切換 T+1 日的資金回收解鎖計算。
+* 💰 **自動資金加總 (Funding Calculation)**: 依據選取的股票與扣款邏輯，自動在日曆上的對應日期加總並標示出當日所需的總申購金額，幫助投資人預籌資金。
+* 🚀 **極速極端緩存與穿透 (Dual Caching & Force Refresh)**: 後端整合 GAS `CacheService` 記憶體快取，前端整合 `localStorage` 達成第二次載入的秒開（0延遲）體驗；並設有一鍵強制重整鈕（Bypass Caches），確保可即時同步試算表的手動修改。
 * 🎨 **明亮現代化介面 (Light Mode RWD UI)**: 採用乾淨優雅的 Light Mode 與 Glassmorphism（毛玻璃）風格設計，並完全支援行動裝置視圖與觸控操作。
 
 ## 4. 技術棧 (Tech Stack)

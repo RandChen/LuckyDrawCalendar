@@ -11,20 +11,22 @@ Viewed script.js:1-293
 *   **FullCalendar 初始化**: 設定日曆的預設檢視（手機顯示「週」、桌機顯示「月」）、隱藏週末 (`weekends: false`)、移除「日」字樣等視覺規則。
 *   **定義變數**: 存放 API 網址，並建立 `allStocks` (全部股票) 與 `selectedStocks` (已勾選股票) 來管理狀態。
 
-### 2. 資料加載邏輯——雙層快取機制 (Line 56-102)
+### 2. 資料加載邏輯——雙層快取與外部依賴 (Line 56-102)
 這是為了極大化使用者體驗而設計的邏輯：
-1.  **優先從 `localStorage` 讀取**: 如果使用者之前開過網頁，資料會秒開呈現。
-2.  **背景向 API 請求**: 同時發送 [fetch](cci:1://file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/Code.gs:20:0-112:1) 請求給 Google Apps Script。
-3.  **差異更新**: 只有當新抓到的資料跟本地舊資料「不一樣」時，才會更新快取並重新渲染畫面。這讓使用者完全感覺不到「載入中」。
+1.  **外部配置先行**: 首要任務是先發送 `fetch('holiday.json')` 讀取國定假日本地端設定檔，確保日曆不會把中秋節算成營業日。
+2.  **優先從 `localStorage` 讀取**: 如果使用者之前開過網頁，資料會秒開呈現。
+3.  **背景向 API 請求**: 同時發送請求給 Google Apps Script。我們甚至設計了 `loadData(true)` 來觸發 URL 帶有 `nocache` 的強制刷新，解決手遊改表無法預覽的問題。
+4.  **差異更新**: 只有當新抓到的資料跟本地舊資料「不一樣」時，才會更新快取並重新渲染畫面。這讓使用者完全感覺不到「載入中」。
 
 ### 3. 動態渲染與互動 (Line 104-222)
 *   **[renderStockList](cci:1://file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js:103:4-199:5)**: 將 JSON 陣列轉換為一個個 HTML `stock-item` 標籤。
 *   **日期清洗**: 為了解決時區偏差問題，我們不使用 `new Date(ISOString)`，而是手動用 `.split('-')` 拆解字串，確保看到的日期跟試算表完全一致。
 *   **事件監聽**: 為每一個 Checkbox 綁定 `change` 事件。一旦勾選，就會執行 [updateCalendar](cci:1://file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js:223:4-275:5)。
 
-### 4. 核心邏輯：日期運算與金額加總 (Line 224-287)
+### 4. 核心邏輯：日期運算、金額加總與動態偏好 (Line 224-287)
 這是專案最複雜也最關鍵的「計算機」：
-*   **營業日判斷 ([getOffsetDateStr](cci:1://file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js:201:4-221:5))**: 當我們要算 T-1 或 T+1 日時，如果算出來是週六或週日，程式會**自動往前後推移**，直到找到最近的週一或週五。這模擬了真實銀行的扣款與撥券邏輯。
+*   **營業日判斷與假日迴避 ([getOffsetDateStr](cci:1://file:///C:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js:201:4-221:5))**: 當我們要算 T-1 或 T+1 日時，如果算出來是週六、週日，**或是名列在 `holiday.json` 中的國定假日**，程式會**自動往前後推移**，直到找到最近的可用營業日。這完美模擬了真實銀行的扣款與撥券邏輯。
+*   **資金邏輯切換 (`fundingLogic`)**: 根據網頁中 `radio` 選項 (是先退款還是先扣款？)，動態改變 `T+1` 是否需要同時包含在資金池裡。
 *   **事件映射 ([updateCalendar](cci:1://file:///c:/Users/07454.rand.chen/Desktop/Antigraty_luckydrawcalendar/script.js:223:4-275:5))**:
     1.  **股票區間條**: 把選中的股票轉換成一個橫跨 `T-1` 到 `T+1` 的「長條事件」。
     2.  **每日結算條**: 建立一個動態物件 `dailySum = {}`，將每一天重疊的股票金額累加起來，最後在日曆格子底部生成一個金額標籤。
